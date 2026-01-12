@@ -387,7 +387,7 @@ local function HttpCallback(OldFunc, ...)
     local IsLogger = Http:IsALogger(Url, _DecodedBody)
     local HasSuspiciousHeaders = Http:HasSuspiciousHeaders(Response.Headers, Request.Headers)
 
-    if IsLogger or HasSuspiciousHeaders then
+    if (IsLogger or HasSuspiciousHeaders) and not white then
         if HasSuspiciousHeaders then
             warn("⚠️ [ SUSPICIOUS HEADERS DETECTED ] ⚠️")
             warn("Response Headers:")
