@@ -374,7 +374,7 @@ local function HttpCallback(OldFunc, ...)
         if Request.IsTable then
             return {
                 Success = true,
-                StatusCode = 200,
+                StatusCode = 204,
                 StatusMessage = "Blocked by VoidShell Anti Logger",
                 Body = "",
                 Headers = {}
