@@ -162,20 +162,25 @@ function Http:IsALogger(Url: string, Body): boolean
     return false
 end
 
-local function FakeIP(IPv6: boolean)
-    if IPv6 then
-        local parts = {string.format("%x", Math.random(0x2000, 0x3fff))}
-        for i = 2, 8 do
-            table.insert(parts, string.format("%04x", Math.random(0, 0xffff)))
-        end
-        return table.concat(parts, ":")
-    else
-        local fs = Math.random(11, 126) 
-        local s = Math.random(0, 255)
-        local t = Math.random(0, 255)
-        local f = Math.random(1, 254)
-        return string.format("%d.%d.%d.%d", fs, s, t, f)
+local function FakeIP(v6, private)
+    if v6 then
+        return "fd00:"..string.format("%x:%x:%x:%x:%x:%x:%x", 
+            math.random(0,0xffff), math.random(0,0xffff), math.random(0,0xffff), 
+            math.random(0,0xffff), math.random(0,0xffff), math.random(0,0xffff), 
+            math.random(0,0xffff))
     end
+
+    if private then
+        local r = math.random(1, 3)
+        if r == 1 then return "192.168." .. math.random(0, 255) .. "." .. math.random(1, 254) end
+        if r == 2 then return "10." .. math.random(0, 255) .. "." .. math.random(0, 255) .. "." .. math.random(1, 254) end
+        return "172." .. math.random(16, 31) .. "." .. math.random(0, 255) .. "." .. math.random(1, 254)
+    end
+
+    local first = math.random(1, 223)
+    if first == 127 then first = 128 end 
+    
+    return first .. "." .. math.random(0, 255) .. "." .. math.random(0, 255) .. "." .. math.random(1, 254)
 end
 
 function Http:HasSuspiciousHeaders(RHeaders: table?, _RHeaders: table?): boolean
