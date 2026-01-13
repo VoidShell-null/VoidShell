@@ -41,8 +41,19 @@ local HttpService = Service("HttpService")
 
 --// Cache
 local Math = {
+    abs = clonefunction(math.abs),
+    floor = clonefunction(math.floor),
+    sin = clonefunction(math.sin),
+    huge = math.huge,
     random = clonefunction(math.random),
-    floor = clonefunction(math.floor)
+    cos = clonefunction(math.cos),
+    max = clonefunction(math.max),
+    min = clonefunction(math.min),
+    rad = clonefunction(math.rad),
+    deg = clonefunction(math.deg),
+    pi = math.pi,
+    sqrt = clonefunction(math.sqrt),
+    clamp = clonefunction(math.clamp)
 }
 
 --// Blacklisted API services
@@ -165,22 +176,22 @@ end
 local function FakeIP(v6, private)
     if v6 then
         return "fd00:"..string.format("%x:%x:%x:%x:%x:%x:%x", 
-            math.random(0,0xffff), math.random(0,0xffff), math.random(0,0xffff), 
-            math.random(0,0xffff), math.random(0,0xffff), math.random(0,0xffff), 
-            math.random(0,0xffff))
+            Math.random(0,0xffff), Math.random(0,0xffff), Math.random(0,0xffff), 
+            Math.random(0,0xffff), Math.random(0,0xffff), Math.random(0,0xffff), 
+            Math.random(0,0xffff))
     end
 
     if private then
-        local r = math.random(1, 3)
-        if r == 1 then return "192.168." .. math.random(0, 255) .. "." .. math.random(1, 254) end
-        if r == 2 then return "10." .. math.random(0, 255) .. "." .. math.random(0, 255) .. "." .. math.random(1, 254) end
-        return "172." .. math.random(16, 31) .. "." .. math.random(0, 255) .. "." .. math.random(1, 254)
+        local r = Math.random(1, 3)
+        if r == 1 then return "192.168." .. Math.random(0, 255) .. "." .. Math.random(1, 254) end
+        if r == 2 then return "10." .. Math.random(0, 255) .. "." .. Math.random(0, 255) .. "." .. Math.random(1, 254) end
+        return "172." .. Math.random(16, 31) .. "." .. Math.random(0, 255) .. "." .. Math.random(1, 254)
     end
 
-    local first = math.random(1, 223)
+    local first = Math.random(1, 223)
     if first == 127 then first = 128 end 
     
-    return first .. "." .. math.random(0, 255) .. "." .. math.random(0, 255) .. "." .. math.random(1, 254)
+    return first .. "." .. Math.random(0, 255) .. "." .. Math.random(0, 255) .. "." .. Math.random(1, 254)
 end
 
 function Http:HasSuspiciousHeaders(RHeaders: table?, _RHeaders: table?): boolean
